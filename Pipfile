@@ -8,5 +8,4 @@ nbconvert = "*"
 requests = "*"
 
 [dev-packages]
-
-
+twine = "*"

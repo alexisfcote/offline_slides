@@ -81,7 +81,7 @@ def export_to_offline_slides(ipynb_path):
             os.renames(reveal_dir, pjoin(head, 'ext/ajax/libs/reveal.js'))
 
 
-if __name__ == '__main__':
+def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Hacky program to make a jupyter \
@@ -95,3 +95,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     export_to_offline_slides(args.notebook_path)
+
+
+if __name__ == '__main__':
+    main()
