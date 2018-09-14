@@ -10,16 +10,16 @@ from contextlib import closing
 from urllib.parse import urlparse
 
 import requests
-from bs4 import BeautifulSoup
 from nbconvert import SlidesExporter
+
 
 def _add_as_offline_ressource(url, path_prefix):
     """download file at url to the ext/ path location and return its local path
-    
+
     Arguments:
         url {str} -- url of the file
         path_prefix {str} -- path prefix of where to download
-    
+
     Returns:
         str -- file location
     """
@@ -30,9 +30,10 @@ def _add_as_offline_ressource(url, path_prefix):
         url, filename=pjoin(path_prefix, path, lib_filename))
     return pjoin(path, lib_filename)
 
+
 def export_to_offline_slides(ipynb_path):
     head, filename = os.path.split(ipynb_path)
-    
+
     # Export ipynb to html reveal.js slides
     slides_exporter = SlidesExporter()
     slides_exporter.reveal_theme = 'White'
@@ -42,8 +43,7 @@ def export_to_offline_slides(ipynb_path):
         (os.path.splitext(filename)[0], '.slides.offline.html'))
 
     with open(pjoin(head, filename), 'r', encoding='utf-8') as f:
-            (body, resources) = slides_exporter.from_file(f)
-
+        (body, resources) = slides_exporter.from_file(f)
 
     if os.path.isdir(pjoin(head, 'ext')):
         shutil.rmtree(pjoin(head, 'ext'))
@@ -62,11 +62,12 @@ def export_to_offline_slides(ipynb_path):
         fout.write(body)
 
     # get missing mathjax files
-    os.makedirs(pjoin(head, 'ext/ajax/libs/mathjax/2.7.1/extensions/'), exist_ok=True)
+    os.makedirs(
+        pjoin(head, 'ext/ajax/libs/mathjax/2.7.1/extensions/'), exist_ok=True)
     urllib.request.urlretrieve("https://raw.githubusercontent.com/mathjax/MathJax/master/extensions/MathZoom.js",
-                            filename=pjoin(head, 'ext/ajax/libs/mathjax/2.7.1/extensions/MathZoom.js'))
+                               filename=pjoin(head, 'ext/ajax/libs/mathjax/2.7.1/extensions/MathZoom.js'))
     urllib.request.urlretrieve("https://raw.githubusercontent.com/mathjax/MathJax/master/extensions/MathMenu.js",
-                            filename=pjoin(head, 'ext/ajax/libs/mathjax/2.7.1/extensions/MathMenu.js'))
+                               filename=pjoin(head, 'ext/ajax/libs/mathjax/2.7.1/extensions/MathMenu.js'))
 
     # get reveal
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -79,8 +80,18 @@ def export_to_offline_slides(ipynb_path):
                 tmpdir, zip_ref.filelist[0].filename[:-1]) + '\\'
             os.renames(reveal_dir, pjoin(head, 'ext/ajax/libs/reveal.js'))
 
-def main():
-    export_to_offline_slides("Presentation_FUNii.ipynb")
 
 if __name__ == '__main__':
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Hacky program to make a jupyter \
+                                                  notebook into offline reveal.js slideshow.\n \
+                                                  Will create a .slides.offline.html next to \
+                                                  the notebook as well as a ext/ folder including all of the required files.\
+                                                  You need to copy both of those for the presentation to work.')
+    parser.add_argument('notebook_path', type=str,
+                        help='Path to the .ipynb notebook')
+
+    args = parser.parse_args()
+
+    export_to_offline_slides(args.notebook_path)
