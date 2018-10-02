@@ -31,13 +31,17 @@ def _add_as_offline_ressource(url, path_prefix):
     return pjoin(path, lib_filename)
 
 
-def export_to_offline_slides(ipynb_path):
+def export_to_offline_slides(ipynb_path, template_file=None, reveal_scroll=True):
     head, filename = os.path.split(ipynb_path)
 
     # Export ipynb to html reveal.js slides
     slides_exporter = SlidesExporter()
     slides_exporter.reveal_theme = 'White'
     slides_exporter.reveal_url_prefix = 'ext/ajax/libs/reveal.js'
+    slides_exporter.reveal_scroll=reveal_scroll
+
+    if template_file:
+        slides_exporter.template_file = template_file
 
     new_filename = ''.join(
         (os.path.splitext(filename)[0], '.slides.offline.html'))
@@ -50,7 +54,7 @@ def export_to_offline_slides(ipynb_path):
 
     exp = re.compile('\"http.*cdnjs.*\"')
 
-    with open(pjoin(head, new_filename), 'w') as fout:
+    with open(pjoin(head, new_filename), 'w', encoding='utf-8') as fout:
         for url in re.findall(exp, body):
             if 'reveal' in url:
                 continue
