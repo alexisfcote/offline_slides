@@ -33,10 +33,11 @@ def _add_as_offline_ressource(url, path_prefix):
 
 def export_to_offline_slides(ipynb_path, template_file=None, reveal_scroll=True):
     head, filename = os.path.split(ipynb_path)
+    head = './' if head == '' else head
 
     # Export ipynb to html reveal.js slides
     slides_exporter = SlidesExporter()
-    slides_exporter.reveal_theme = 'White'
+    slides_exporter.reveal_theme = 'white'
     slides_exporter.reveal_url_prefix = 'ext/ajax/libs/reveal.js'
     slides_exporter.reveal_scroll=reveal_scroll
 
@@ -81,8 +82,8 @@ def export_to_offline_slides(ipynb_path, template_file=None, reveal_scroll=True)
         with zipfile.ZipFile(io.BytesIO(r.content)) as zip_ref:
             zip_ref.extractall(tmpdir)
             reveal_dir = os.path.join(
-                tmpdir, zip_ref.filelist[0].filename[:-1]) + '\\'
-            os.renames(reveal_dir, pjoin(head, 'ext/ajax/libs/reveal.js'))
+                tmpdir, zip_ref.filelist[0].filename[:-1])
+            shutil.move(reveal_dir, pjoin(head, 'ext/ajax/libs/reveal.js'))
 
 
 def main():
