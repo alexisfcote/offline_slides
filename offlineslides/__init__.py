@@ -1,1 +1,2 @@
 from .offlineslides import export_to_offline_slides
+from .offlinejupyter import export_to_offline
