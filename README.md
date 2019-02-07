@@ -1,3 +1,12 @@
+
+.. image:: https://img.shields.io/pypi/v/offline_slides.svg
+    :target: https://pypi.python.org/pypi/offline_slides
+    :alt: Latest PyPI version
+
+.. image:: https://travis-ci.com/alexisfcote/offline_slides.svg?branch=master
+    :target: https://travis-ci.com/alexisfcote/offline_slides
+    :alt: Latest Travis-ci build
+
 # offline slides
 Hacky program to make a jupyter 
 notebook into offline reveal.js slideshow. Can also output a html version.
