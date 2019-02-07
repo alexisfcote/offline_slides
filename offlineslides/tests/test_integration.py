@@ -11,6 +11,7 @@ from nbformat.v4 import (
 )
 
 from offlineslides import export_to_offline_slides
+from offlineslides import export_to_offline
 
 png_green_pixel = encodebytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00'
 b'\x00\x00\x01\x00\x00x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDAT'
@@ -58,6 +59,28 @@ class integration_test(unittest.TestCase):
         assert os.path.isdir('tests/ext/ajax/libs/require.js')
         assert os.path.isdir('tests/ext/ajax/libs/reveal.js')
 
+    def test_offline_jupyter_html_without_errors(self):
+        export_to_offline('tests/testnb.ipynb', slides=False)
+        assert os.path.isfile('tests/testnb.offline.html')
+        assert os.path.isdir('tests/ext/ajax/libs')
+        assert os.path.isdir('tests/ext/ajax/libs/jquery')
+        assert os.path.isdir('tests/ext/ajax/libs/mathjax')
+        assert os.path.isdir('tests/ext/ajax/libs/require.js')
+
+    def test_offline_jupyter_slides_without_errors(self):
+        export_to_offline('tests/testnb.ipynb', slides=True)
+        assert os.path.isfile('tests/testnb.slides.offline.html')
+        assert os.path.isdir('tests/ext/ajax/libs')
+        assert os.path.isdir('tests/ext/ajax/libs/jquery')
+        assert os.path.isdir('tests/ext/ajax/libs/mathjax')
+        assert os.path.isdir('tests/ext/ajax/libs/require.js')
+        assert os.path.isdir('tests/ext/ajax/libs/font-awesome')
+        assert os.path.isdir('tests/ext/ajax/libs/reveal.js')
+
+    def test_offline_jupyter_no_download(self):
+        export_to_offline('tests/testnb.ipynb', slides=True, no_download=True)
+        assert os.path.isfile('tests/testnb.slides.offline.html')
+        assert not os.path.isdir('tests/ext/')
 
 if __name__ == '__main__':
     unittest.main()
