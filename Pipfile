@@ -9,3 +9,4 @@ requests = "*"
 
 [dev-packages]
 twine = "*"
+tox-pipenv = "*"
