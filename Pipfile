@@ -11,4 +11,3 @@ nbformat = "*"
 [dev-packages]
 twine = "*"
 tox = "*"
-tox-pipenv = "*"
