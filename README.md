@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/alexisfcote/offline_slides.svg?branch=master)](https://travis-ci.com/alexisfcote/offline_slides)
 
 # Offline Slides
-Hacky program to make a jupyter 
+Program to make a jupyter 
 notebook into offline reveal.js slideshow. Can also output a html version.
 Will create a .slides.offline.html next to 
 the notebook as well as a ext/ folder including all of the required files.
